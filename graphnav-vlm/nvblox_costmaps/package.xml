@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>nvblox_costmaps</name>
+  <version>0.0.0</version>
+  <description>Launch configurations for NvBlox-based costmap generation with RealSense and Velodyne sensors</description>
+  <maintainer email="vladkoblicica1@gmail.com">vladkobli</maintainer>
+  <license>Apache-2.0</license>
+  
+  <author email="vladkoblicica1@gmail.com">vladkobli</author>
+  
+  <url type="repository">https://github.com/husarion/isaac_ros-dev</url>
+
+  <test_depend>ament_copyright</test_depend>
+  <test_depend>ament_flake8</test_depend>
+  <test_depend>ament_pep257</test_depend>
+  <test_depend>python3-pytest</test_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

@@ -1,0 +1,37 @@
+services:
+  clipseg-realsense:
+    image: clipseg-docker:v2
+    container_name: clipseg-realsense
+
+    network_mode: host
+    ipc: host
+    privileged: true
+    stdin_open: true
+    tty: true
+
+    runtime: nvidia
+
+    devices:
+      - /dev/bus/usb:/dev/bus/usb
+
+    environment:
+      NVIDIA_VISIBLE_DEVICES: all
+      NVIDIA_DRIVER_CAPABILITIES: all
+
+      DDS_INTERFACE: ${DDS_INTERFACE:-eno1}
+      ROS_DOMAIN_ID: ${ROS_DOMAIN_ID:-0}
+      RMW_IMPLEMENTATION: ${RMW_IMPLEMENTATION:-rmw_cyclonedds_cpp}
+      CYCLONEDDS_URI: file:///etc/cyclonedds/cyclonedds.xml
+
+      HF_HOME: /root/.cache/huggingface
+      HF_HUB_DISABLE_TELEMETRY: "1"
+
+    volumes:
+      - ./src:/rgbd_camera/src:rw
+      - ./install:/rgbd_camera/install:rw
+      - ./build:/rgbd_camera/build:rw
+      - ./log:/rgbd_camera/log:rw
+      - ./hf_cache:/root/.cache/huggingface:rw
+      - /dev/bus/usb:/dev/bus/usb
+
+    command: bash

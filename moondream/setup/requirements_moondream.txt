@@ -1,0 +1,15 @@
+transformers
+accelerate
+bitsandbytes
+huggingface_hub
+safetensors
+tokenizers
+einops
+Pillow
+numpy
+opencv-python
+matplotlib
+tqdm
+ollama
+pydantic
+requests

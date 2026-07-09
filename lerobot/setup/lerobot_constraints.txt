@@ -1,0 +1,2 @@
+setuptools>=71,<81
+packaging>=24.2,<26

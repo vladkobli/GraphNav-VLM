@@ -1,0 +1,3 @@
+[submodule "learned_frontier_detector/learned_frontier_detector/yolov5"]
+	path = learned_frontier_detector/learned_frontier_detector/yolov5
+	url = https://github.com/ultralytics/yolov5.git

@@ -1,0 +1,14 @@
+/**:
+    ros__parameters:
+        enable_color: True
+        enable_depth: True
+        enable_infra1: False
+        enable_infra2: False
+        pointcloud.enable: True
+        pointcloud.enable: False
+        align_depth.enable: True
+        # depth_module.depth_profile: '640x480x30'
+        # rgb_camera.color_profile: '640x480x30'
+        depth_module.depth_profile: '848x480x15'
+        rgb_camera.color_profile: '848x480x15'
+        camera_name: 'camera0'   # for nvblox

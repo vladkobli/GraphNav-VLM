@@ -1,0 +1,13 @@
+/**:
+  ros__parameters:
+    ntrip_location_lat: 46.770439
+    ntrip_location_lon: 23.591423
+
+    publish_port_rtcm_active: false
+    serial_port: "/dev/ttyACM0"
+    serial_port_baud_rate: 38400
+
+    publish_ros_rtcm_active: true
+    rtcm_topic: "/rtcm"
+
+    debug: true

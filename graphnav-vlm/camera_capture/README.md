@@ -1,6 +1,6 @@
 # Camera Capture
 
-## Using GUI (Click to capture)
+## Using GUI (Click to capture). OLD VERSION. USE NEW (BELOW)
 This mode uses a GUI with a capture button that records and saves all the requested data when pressed
 ```bash
 # Launch
@@ -15,7 +15,7 @@ ros2 run camera_capture camera_capture --ros-args \
   -p require_all_topics:=false
 ```
 
-## Automatic Waypoint Following
+`Automatic Waypoint Following`
 An RViz2 windows pops up, using SLAM. Explore the environment a bit so that the map is generated, and you can select the desired waypoints accordingly. Another option is to use a presaved map and use the the Estimate Pose option.
 ```bash
 # Launch
@@ -29,32 +29,29 @@ ros2 service call /waypoint_logging/start std_srvs/srv/Trigger {}
 ros2 service call /waypoint_logging/clear std_srvs/srv/Trigger
 ```
 
-## Semiautomatic dataset acuqisition
+`Semiautomatic dataset acuqisition`
 This test-case assumes the user teleoperates the robot in the desired interest loccations and presses the capture button on the GUI, which triggers the automatic acquisition sequence: photos in quadrature from 3 different poses: at 0 deg, 30 deg and 60 deg relative yaw. The pose of the robot is recorded for each node as well.
 ```bash
 ros2 launch camera_capture manual_pose_sequence_logging.launch.py use_rviz:=true
 ```
 
-## Lerobot
+
+## New dataset acquisiton method, using LeRobot
 ```bash
 # Realsense launch
 ros2 launch sensors_bringup realsense.launch.py
-# Lerobot bringup old
+
+# Lerobot bringup new
 ros2 launch camera_capture lerobot_realsense_sequence_logging.launch.py \
   use_lidar:=true \
   use_slam:=true \
   use_rviz:=true \
   lerobot_server_url:=http://172.17.0.1:8765
-
-# Lerobot bringup new
-ros2 launch camera_capture lerobot_realsense_sequence_logging.launch.py \
-  use_lidar:=false \
-  use_slam:=false \
-  use_rviz:=false \
-  lerobot_server_url:=http://172.17.0.1:8765
 ```
+Now, you can record nodes through the press of a button.
 
-# Steps to build graph
+
+# DATASET CREATION. Steps to build graph.
 1. Record dataset
 2. Create map view with nodes
 ```bash
@@ -73,10 +70,10 @@ python3 src/camera_capture/camera_capture/build_high_quality_map.py --ros-args \
   -p map_topic:=/map \
   -p marker_topic:=/metadata_node_markers \
   -p output_prefix:=map_export \
-  -p dpi:=600
+  -p dpi:=300
 ```
 
-3. Manually form connections between nodes to form graph and load them into `build_dataset_graph.py`
+3. Manually form connections between nodes to form graph and manually load them into `camera_capture/camera_capture/build_dataset_graph.py`
 4. Final json graph
 ```bash
 python3 src/camera_capture/camera_capture/build_dataset_graph.py \

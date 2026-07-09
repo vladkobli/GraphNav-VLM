@@ -97,12 +97,36 @@ bus = FeetechMotorsBus(port=PORT, motors=motors)
 bus_lock = threading.Lock()
 connected = False
 
+FRONT_M5 = 2233
+LEFT_M5 = 1203
+RIGHT_M5 = 3264
+
+TICKS_PER_DEG_LEFT = (FRONT_M5 - LEFT_M5) / 90.0
+TICKS_PER_DEG_RIGHT = (RIGHT_M5 - FRONT_M5) / 90.0
+
+
+def yaw_deg_to_m5(relative_yaw_deg):
+    yaw = float(relative_yaw_deg)
+    if yaw >= 0.0:
+        return int(round(FRONT_M5 - yaw * TICKS_PER_DEG_LEFT))
+    return int(round(FRONT_M5 - yaw * TICKS_PER_DEG_RIGHT))
+
 
 def normalize_stop_name(name: str) -> str:
     return str(name).strip().lower().replace("-", "_").replace(" ", "_")
 
 
 def resolve_stop(payload):
+    if "relative_yaw_deg" in payload:
+        yaw = float(payload["relative_yaw_deg"])
+        m5 = yaw_deg_to_m5(yaw)
+        return {
+            "index": int(payload.get("stop_index", 0)),
+            "name": str(payload.get("stop_name", f"yaw_{yaw:+.0f}")),
+            "m5": m5,
+            "relative_yaw_deg": yaw,
+        }
+
     if "stop_index" in payload:
         stop_index = int(payload["stop_index"])
         if stop_index not in STOP_BY_INDEX:
@@ -117,9 +141,6 @@ def resolve_stop(payload):
             )
         return STOP_BY_NAME[stop_name]
 
-    # Backwards compatibility with older logger calling /move_angle.
-    # If it sends 1..8, interpret as stop index.
-    # If it sends 0..360, map to nearest of the 8 stops.
     if "angle_deg" in payload:
         angle = float(payload["angle_deg"])
         if 1.0 <= angle <= float(len(STOP_DEFS)) and abs(angle - round(angle)) < 1e-6:
@@ -128,7 +149,7 @@ def resolve_stop(payload):
         nearest_i = max(1, min(len(STOP_DEFS), nearest_i))
         return STOP_BY_INDEX[nearest_i]
 
-    raise ValueError("Payload must include stop_index, stop_name, or angle_deg.")
+    raise ValueError("Payload must include stop_index, stop_name, relative_yaw_deg, or angle_deg.")
 
 
 def stop_to_targets(stop):

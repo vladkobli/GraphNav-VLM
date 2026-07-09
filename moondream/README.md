@@ -11,7 +11,9 @@ cd ~/rocon-demos/moondream/
 source ~/rocon-demos/moondream/venv_moondream/bin/activate
 ```
 
-## Add descriptions to existing json
+## Create Dataset
+Follow initial steps in `camera_capture` package
+
 After having dataset created and attributed the neighbours of each node
 ```bash
 python add_descriptions.py \
@@ -22,34 +24,33 @@ python add_descriptions.py \
 
 ## Run Experiment on offline map
 ```bash
-## DFS vs Visual
 # DFS
 python run_nav_experiment.py \
-  --graph-json nodes_graph_8_color_described.json \
-  --model qwen2.5:7b \
-  --task "Go indoors" \
-  --start-node n44 \
-  --goal-nodes n19 \
-  --max-steps 60 \
-  --memory-mode partial \
-  --controller-mode dfs \
-  --manual-path n44,n43,n42,n41,n24,n20,n19 \
-  --output-dir results
+    --graph-json nodes_graph_8_color_described.json \
+    --model qwen2.5:7b \
+    --task "Find a bike rack" \
+    --start-node "n37" \
+    --goal-nodes "n57,n58,n59,n60,n61,n62,n64,n65" \
+    --max-steps "30" \
+    --memory-mode partial \
+    --controller-mode dfs \
+    --manual-path "n37,n36,n35,n32,n33,n34,n57" \
+    --output-dir "results_dfs"
 
 # Visual
 python run_nav_experiment.py \
-  --graph-json nodes_graph_8_color_described3.json \
-  --model qwen2.5:7b \
-  --task "Find a bike rack" \
-  --start-node n12 \
-  --goal-nodes n44,n45,n46 \
-  --max-steps 60 \
-  --memory-mode partial \
-  --controller-mode visual \
-  --model-stop-on-target \
-  --stop-confidence-threshold 0.75 \
-  --visual-max-node-visits 2 \
-  --visual-max-edge-repeats 1 \
-  --manual-path n12,n11,n16,n19,n20,n24,n41,n42,n43,n45 \
-  --output-dir results
+    --graph-json nodes_graph_8_color_described.json \
+    --model qwen2.5:7b \
+    --task "Find a bike rack" \
+    --start-node "n37" \
+    --goal-nodes "n57,n58,n59,n60,n61,n62,n64,n65" \
+    --max-steps "30" \
+    --memory-mode partial \
+    --controller-mode visual \
+    --model-stop-on-target \
+    --stop-confidence-threshold 0.75 \
+    --visual-max-node-visits 2 \
+    --visual-max-edge-repeats 1 \
+    --manual-path "n37,n36,n35,n32,n33,n34,n57" \
+    --output-dir "results_visual"
 ```
